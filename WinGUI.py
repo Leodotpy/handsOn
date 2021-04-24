@@ -27,7 +27,13 @@ class DrawableWin:
     def drawFrame(self):
         self.screen.fill(self.backCol)
         for i in range(len(self.ball.bounds)):
-            self.ball.bounds[i].drawFillRight(self.screen, [255, 100, 100, 50])
+            self.ball.bounds[i].drawFillBack(self.screen, (255, 100, 100, 100), (100, 100, 100, 20))
+            self.ball.bounds[i].drawFillRight(self.screen, (255, 100, 100, 100), (100, 100, 100, 20))
+            self.ball.bounds[i].drawFillLeft(self.screen, (255, 100, 100, 100), (100, 100, 100, 20))
+            self.ball.bounds[i].drawFillTop(self.screen, (255, 100, 100, 100), (100, 100, 100, 20))
+            self.ball.bounds[i].drawFillBottom(self.screen, (255, 100, 100, 100), (100, 100, 100, 20))
+            self.ball.bounds[i].drawFillFront(self.screen, (255, 100, 100, 100), (100, 100, 100, 20))
+            self.ball.bounds[i].drawWire(self.screen, 2)
         self.ball.draw(self.screen)
         pygame.display.flip()
         pygame.display.update()

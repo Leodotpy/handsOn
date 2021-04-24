@@ -1,6 +1,7 @@
 import math
 import pygame
 from pingPong.constants import Constants as c
+from Physics.ColorMath import Color as co
 
 class Vector3:
     x, y, z = 0, 0, 0
@@ -53,6 +54,9 @@ class Vector3:
 class BoundRect:
     C1, C2 = Vector3(0, 0, 0), Vector3(0, 0, 0)
     concave = False
+
+    leftVal, rightVal, topVal, botVal, backVal, frontVal = 0, 0, 0, 0, 0, 0
+    fadeAmount = 0.02
 
     def __init__(self, C1, C2, pos, concave):
         self.pos = pos
@@ -114,13 +118,104 @@ class BoundRect:
                          width)
 
 
-    def drawFillRight(self, screen, color):
+    def drawFillRight(self, screen, c1, c2):
         c1Fac = self.C1.depthAdjustFactor()
         c2Fac = self.C2.depthAdjustFactor()
+
+        col = co(c1).interpColors(c2, self.rightVal)
 
         points = [(self.C2.x*c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y*c1Fac - c.halfDims[1]),
                 (self.C2.x*c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y*c2Fac - c.halfDims[1]),
                 (self.C2.x*c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y*c2Fac - c.halfDims[1]),
                 (self.C2.x*c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y*c1Fac - c.halfDims[1])]
-        
-        pygame.draw.polygon(screen, color, points, 0)
+
+        co.draw_polygon_alpha(screen, col, points)
+        if (self.rightVal > 0):
+            self.rightVal -= self.fadeAmount
+        else:
+            self.rightVal = 0
+
+    def drawFillLeft(self, screen, c1, c2):
+        c1Fac = self.C1.depthAdjustFactor()
+        c2Fac = self.C2.depthAdjustFactor()
+
+        col = co(c1).interpColors(c2, self.leftVal)
+
+        points = [(self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c1Fac - c.halfDims[1]),
+                  (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c2Fac - c.halfDims[1]),
+                  (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1]),
+                  (self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1])]
+
+        co.draw_polygon_alpha(screen, col, points)
+        if (self.leftVal > 0):
+            self.leftVal -= self.fadeAmount
+        else:
+            self.leftVal = 0
+
+    def drawFillTop(self, screen, c1, c2):
+        c1Fac = self.C1.depthAdjustFactor()
+        c2Fac = self.C2.depthAdjustFactor()
+
+        col = co(c1).interpColors(c2, self.topVal)
+
+        points = [(self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1]),
+                  (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1]),
+                  (self.C2.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1]),
+                  (self.C2.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1])]
+
+        co.draw_polygon_alpha(screen, col, points)
+        if (self.topVal > 0):
+            self.topVal -= self.fadeAmount
+        else:
+            self.topVal = 0
+
+    def drawFillBottom(self, screen, c1, c2):
+        c1Fac = self.C1.depthAdjustFactor()
+        c2Fac = self.C2.depthAdjustFactor()
+
+        col = co(c1).interpColors(c2, self.botVal)
+
+        points = [(self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c1Fac - c.halfDims[1]),
+                  (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c2Fac - c.halfDims[1]),
+                  (self.C2.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c2Fac - c.halfDims[1]),
+                  (self.C2.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c1Fac - c.halfDims[1])]
+
+        co.draw_polygon_alpha(screen, col, points)
+        if (self.botVal > 0):
+            self.botVal -= self.fadeAmount
+        else:
+            self.botVal = 0
+
+    def drawFillFront(self, screen, c1, c2):
+        c1Fac = self.C1.depthAdjustFactor()
+        c2Fac = self.C2.depthAdjustFactor()
+
+        col = co(c1).interpColors(c2, self.frontVal)
+
+        points = [(self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c1Fac - c.halfDims[1]),
+                  (self.C2.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c1Fac - c.halfDims[1]),
+                  (self.C2.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1]),
+                  (self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1])]
+
+        co.draw_polygon_alpha(screen, col, points)
+        if (self.frontVal > 0):
+            self.frontVal -= self.fadeAmount
+        else:
+            self.frontVal = 0
+
+    def drawFillBack(self, screen, c1, c2):
+        c1Fac = self.C1.depthAdjustFactor()
+        c2Fac = self.C2.depthAdjustFactor()
+
+        col = co(c1).interpColors(c2, self.backVal)
+
+        points = [(self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c2Fac - c.halfDims[1]),
+                  (self.C2.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c2Fac - c.halfDims[1]),
+                  (self.C2.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1]),
+                  (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1])]
+
+        co.draw_polygon_alpha(screen, col, points)
+        if (self.backVal > 0):
+            self.backVal -= self.fadeAmount
+        else:
+            self.backVal = 0

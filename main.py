@@ -6,7 +6,6 @@ import pygame
 from pingPong.constants import Constants as c
 
 width, height = 1920, 1080
-gravity = M.Vector3(0, -9.8, 0)
 
 bounds = [M.BoundRect(M.Vector3(-500, -500, 0), M.Vector3(500, 500, 1000), M.Vector3(0, 0, 0), True)]
 
@@ -16,7 +15,7 @@ ai_paddle = M.BoundRect(M.Vector3(-200, -200, 900), M.Vector3(200, 200, 1000), M
 bounds.append(player_paddle)
 bounds.append(ai_paddle)
 
-ball = B.Ball(50, M.Vector3(0, 100, 0), M.Vector3(100, 100, 100), bounds)
+ball = B.Ball(50, M.Vector3(0, 0, 500), M.Vector3(100, 100, 100), bounds)
 w = WinGUI.DrawableWin(ball)
 
 running = True
