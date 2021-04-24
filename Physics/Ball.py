@@ -1,5 +1,5 @@
 import Math as m
-import main.main as main
+import main
 
 
 class Ball:
@@ -15,4 +15,7 @@ class Ball:
         self.bounds = bounds
 
     def PhysicsTick(self, t):
+        # Move with velocity
+        self.pos = self.pos.Add(self.velocity)
+        # Gravity
         self.velocity = self.velocity.Add(main.gravity)
