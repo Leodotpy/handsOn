@@ -47,7 +47,7 @@ class Track:
 
                             point += 1
 
-                #self.mpDraw.draw_landmarks(frame, handLms, self.mpHands.HAND_CONNECTIONS)
+                self.mpDraw.draw_landmarks(frame, handLms, self.mpHands.HAND_CONNECTIONS)
 
         return frame, coordList
         # self.hand_list.append(handLms.landmark)ZA

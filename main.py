@@ -24,7 +24,7 @@ w = WinGUI.DrawableWin(ball)
 
 running = True
 frame_state = 'menu'
-hasCamera = False
+hasCamera = True
 
 lastTime = time.time()
 
@@ -42,10 +42,10 @@ prevPaddleX, prevPaddleY = 0,0
 
 
 myHands = None
-
+pointLength = 8
 # points stored in memory for averaging
-pointLength = 6
 lastPoints = [(0, 0)] * pointLength
+pointLength = 6
 
 # calculate the average of the last points
 def averageOfLast(points):
@@ -87,9 +87,6 @@ average = (0,0)
 paddleX, paddleY = average
 
 mouseCoords = (0, 0)
-pointLength = 8
-lastPoints = [(0, 0)] * pointLength
-
 button1Fac = 0
 button2Fac = 0
 
@@ -114,7 +111,20 @@ while running:
             # pass the frame and list of points for tracking
             frame, coordList = (myHands.get_hand_position(frame, [4]))
 
+            print(coordList)
+
+            # remove the last point in the list and add the new one
+            if coordList:
+                lastPoints.pop(0)
+                lastPoints.append(coordList[0])
+            #paddleX, paddleY = setPoints(coordList)
             mouseCoords = setPoints(coordList)
+
+            average = averageOfLast(lastPoints)
+
+
+            cv2.imshow('tracking', frame)
+
 
     deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)
@@ -178,6 +188,8 @@ while running:
             if button2Fac < 0:
                 button2Fac = 0
         w.drawFrameGameover(lastPoints, button1Fac, button2Fac)
+
+
 
 
 pygame.quit()
