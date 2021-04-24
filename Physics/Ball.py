@@ -27,10 +27,12 @@ class Ball:
                     if self.pos.x - self.radius < self.bounds[i].C2.x < self.pos.x + self.radius:
                         self.pos.x = self.bounds[i].C2.x + self.radius
                         self.velocity.x = -self.velocity.x
+                        self.bounds[i].rightVal = 1
                     # Right of sphere hits left of box
                     if self.pos.x + self.radius > self.bounds[i].C1.x > self.pos.x - self.radius:
                         self.pos.x = self.bounds[i].C1.x - self.radius
                         self.velocity.x = -self.velocity.x
+                        self.bounds[i].leftVal = 1
 
                 if self.bounds[i].C1.x < self.pos.x < self.bounds[i].C2.x and self.bounds[i].C1.z < self.pos.z < \
                         self.bounds[i].C2.z:
@@ -38,10 +40,12 @@ class Ball:
                     if self.pos.y - self.radius < self.bounds[i].C2.y < self.pos.y + self.radius:
                         self.pos.y = self.bounds[i].C2.y + self.radius
                         self.velocity.y = -self.velocity.y
+                        self.bounds[i].topVal = 1
                     # Top of sphere hits bottom of box case
                     if self.pos.y + self.radius > self.bounds[i].C1.y > self.pos.y - self.radius:
                         self.pos.y = self.bounds[i].C1.y - self.radius
                         self.velocity.y = -self.velocity.y
+                        self.bounds[i].botVal = 1
 
                 if self.bounds[i].C1.x < self.pos.x < self.bounds[i].C2.x and self.bounds[i].C1.y < self.pos.y < \
                         self.bounds[i].C2.y:
@@ -49,37 +53,45 @@ class Ball:
                     if self.pos.z - self.radius < self.bounds[i].C2.z < self.pos.z + self.radius:
                         self.pos.z = self.bounds[i].C2.z + self.radius
                         self.velocity.z = -self.velocity.z
+                        self.bounds[i].backVal = 1
                     # Front of sphere hits back of box
                     if self.pos.z + self.radius > self.bounds[i].C1.z > self.pos.z - self.radius:
                         self.pos.z = self.bounds[i].C1.z - self.radius
                         self.velocity.z = -self.velocity.z
+                        self.bounds[i].frontVal = 1
             else:
                 # Left of sphere hits left of box
                 if self.pos.x - self.radius < self.bounds[i].C1.x:
                     self.pos.x = self.bounds[i].C1.x + self.radius
                     self.velocity.x = -self.velocity.x
+                    self.bounds[i].leftVal = 1
                 # Right of sphere hits right of box
                 if self.pos.x + self.radius > self.bounds[i].C2.x:
                     self.pos.x = self.bounds[i].C2.x - self.radius
                     self.velocity.x = -self.velocity.x
+                    self.bounds[i].rightVal = 1
 
                 # Bottom of sphere hits bottom of box
                 if self.pos.y - self.radius < self.bounds[i].C1.y:
                     self.pos.y = self.bounds[i].C1.y + self.radius
                     self.velocity.y = -self.velocity.y
+                    self.bounds[i].botVal = 1
                 # Top of sphere hits top of box
                 if self.pos.y + self.radius > self.bounds[i].C2.y:
                     self.pos.y = self.bounds[i].C2.y - self.radius
                     self.velocity.y = -self.velocity.y
+                    self.bounds[i].topVal = 1
 
                 # Back of sphere hits back of box
                 if self.pos.z - self.radius < self.bounds[i].C1.z:
                     self.pos.z = self.bounds[i].C1.z + self.radius
                     self.velocity.z = -self.velocity.z
+                    self.bounds[i].frontVal = 1
                 # Front of sphere hits front of box
                 if self.pos.z + self.radius > self.bounds[i].C2.z:
                     self.pos.z = self.bounds[i].C2.z - self.radius
                     self.velocity.z = -self.velocity.z
+                    self.bounds[i].backVal = 1
 
     def draw(self, screen):
         if self.pos.z == 0:
