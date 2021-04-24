@@ -16,7 +16,6 @@ class Constants(object):
 
     mpHands = mp.solutions.hands
     hands = mpHands.Hands()
-
     mpDraw = mp.solutions.drawing_utils
     monWidth, monHeight = pyautogui.size()
 

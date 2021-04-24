@@ -37,7 +37,7 @@ prevPaddleX, prevPaddleY = 0,0
 myHands = None
 
 # points stored in memory for averaging
-pointLength = 16
+pointLength = 6
 lastPoints = [(0, 0)] * pointLength
 
 # calculate the average of the last points
@@ -47,8 +47,8 @@ def averageOfLast(points):
     vy = 0
 
     for v in range(len(points) - 1):
-        vx = points[v][0] + vx
-        vy = points[v][1] + vy
+        vx = points[v][0]*3 + vx
+        vy = points[v][1]*3 + vy
 
     average = (int(vx / (len(points) - 1)), int(vy / (len(points) - 1)))
 
@@ -91,8 +91,8 @@ while running:
         average = averageOfLast(lastPoints)
 
         # circle each of the last points and the average point
-        for coord in lastPoints:
-            cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)
+        '''for coord in lastPoints:
+            cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)'''
 
         cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
 
@@ -102,7 +102,10 @@ while running:
 
     #paddleX, paddleY = pygame.mouse.get_pos()
 
-    paddleX, paddleY = average[0],average[1]
+    posX = width * (average[0] / myHands.w)/2
+    posY = height * (average[1] / myHands.h)/2
+
+    paddleX, paddleY = posX, posY
 
     deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)
