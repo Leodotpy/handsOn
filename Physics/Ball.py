@@ -1,5 +1,6 @@
 import Math as m
 import main
+import pygame
 
 
 class Ball:
@@ -50,3 +51,5 @@ class Ball:
                     self.pos.z = bound.C1.z - self.radius
                     self.velocity.z = -self.velocity.z
 
+    def draw(self, screen):
+        pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), 100)
