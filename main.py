@@ -2,6 +2,7 @@ from Physics import Math as M
 from Physics import Ball as B
 import time
 import WinGUI
+import pygame
 
 width, height = 1920, 1080
 gravity = M.Vector3(0, -9.8, 0)
@@ -20,6 +21,11 @@ while running:
     lastTime = currentTime
 
     ball.PhysicsTick(deltaTime)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
     w.drawFrame()
 
-
+pygame.quit()
