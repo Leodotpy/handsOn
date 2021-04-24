@@ -11,25 +11,27 @@ import pyautogui
 import HandTrackModel
 from rich import print
 
-
+# setup pyautogui for moving the mouse
 pyautogui.PAUSE = 0
 pyautogui.FAILSAFE = False
 
+# set up webcam video capture device
 cap = cv2.VideoCapture(1)
 
+# set up hand tracking using mediapipe
 mpHands = mp.solutions.hands
 hands = mpHands.Hands()
-
 mpDraw = mp.solutions.drawing_utils
 
+# get size of user's monitor
 monWidth, monHeight = pyautogui.size()
-
 print(monWidth, monHeight)
 
 
+# move mouse cursor to hand
 def moveMouse(cx, cy, w, h):
     offsetX = int(w / 10)
-    offsetY = int(h / 8)#
+    offsetY = int(h / 8)  #
 
     # mouse.click(button="left")
     # mouse.move(cx/w*monWidth,cy/h*monHeight)
@@ -39,51 +41,42 @@ def moveMouse(cx, cy, w, h):
 
 myHands = None
 
-pointLength = 10
+# points stored in memory for averaging
+pointLength = 16
+lastPoints = [(0, 0)] * pointLength
 
-lastPoints = [(0,0)]*pointLength
 
-
-
+# calculate the average of the last points
 def averageOfLast(points):
-    #average = [int(np.mean(points[0])),int(np.mean(points[1]))]
+    # average = [int(np.mean(points[0])),int(np.mean(points[1]))]
     vx = 0
     vy = 0
 
-    for v in range(len(points)-1):
+    for v in range(len(points) - 1):
         vx = points[v][0] + vx
         vy = points[v][1] + vy
 
-    average = (int(vx/(len(points)-1)), int(vy/(len(points)-1)))
+    average = (int(vx / (len(points) - 1)), int(vy / (len(points) - 1)))
 
     # print(points)
     # print(average)
     return average
 
 
+# loop
 while (True):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
-    # frame = cv2.flip(frame, 1)
-
-    # Our operations on the frame come here
-    # camRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    # results = hands.process(camRGB)
-    # print(results.multi_hand_landmarks)
-
-    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+    # setup hands model if it does not exist
     if myHands is None:
         myHands = HandTrackModel.Track(len(frame[0]), len(frame), monWidth, monHeight)
         print('set')
     else:
+        # pass the frame and list of points for tracking
+        frame, coordList = (myHands.get_hand_position(frame, [4]))
 
-
-        frame, coordList = (myHands.get_hand_position(frame,[4]))
-
-        #print(coordList)
-
+        # remove the last point in the list and add the new one
         if coordList:
             lastPoints.pop(0)
             lastPoints.append(coordList[0])
@@ -91,86 +84,19 @@ while (True):
             '''for i in range(len(lastPoints)-1):
                 cv2.circle(frame, (lastPoints[i][0],lastPoints[i][1]), 15, [255, 255, 0])'''
 
+        # get the average of the points
         average = averageOfLast(lastPoints)
 
-        cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
-
-        #cv2.circle(frame, (average[0],average[1]), 15, [255, 255, 0],20)
-
+        # circle each of the last points and the average point
         for coord in lastPoints:
             cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)
 
+        cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
 
-
-
-        '''if coordList != [[0,0],[0,0]]:
-            
-
-            #print(lastPoints)
-
-            for point in lastPoints:
-                try:
-                    cv2.circle(frame, (point[0]), 15, [255, 255, 0])
-                    cv2.circle(frame, (point[1]), 15, [255, 255, 0])
-                except:
-                    print('failed')
-
-        #print(coordList)
-'''
-
-
-
-
-
-
-        # drawline
-        '''if len(coordList) == 2:
-            # print(coordList[0])
-            cv2.line(frame,(coordList[0][0],coordList[0][1]),(coordList[1][0],coordList[1][1]), [0,255,255], 12)
-
-            lineLength = math.hypot(coordList[1][0] - coordList[0][0],coordList[1][1]-coordList[0][1])
-            #print(lineLength)
-
-            # draw circles
-            for point in coordList:
-                cv2.circle(frame, (point[0],point[1]), 15, [255, 255, 0])'''
-
-
-        # print(myHands.get_hand_position())
-
-        # numOfHands = len(hands)
-
-        '''if results.multi_hand_landmarks:
-    
-            for handLms in results.multi_hand_landmarks:
-    
-                # get landmark and index number for landmark
-                for id, lm in enumerate(handLms.landmark):
-                    # print(id,lm)
-    
-                    w, h, c = frame.shape
-                    cx, cy = int(lm.x * w), int(lm.y * h)
-                    # print(id, cx,cy)
-    
-                    if id == 8:
-                        moveMouse(cx, cy, w, h)
-    
-                mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)'''
-
-
-        # perform a naive attempt to find the (x, y) coordinates of
-        # the area of the image with the largest intensity value
-        '''(minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
-        cv2.circle(cam, maxLoc, 5, (255, 0, 0), 2)'''
-
-        # Display the resulting frame
-
-        # frame = cv2.resize(frame,2)
-
+        # display the resulting frame
         cv2.imshow('frame', frame)
 
-    # print(len(frame[0]), len(frame))
-
+    # end if user presses q
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
