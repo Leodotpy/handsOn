@@ -36,7 +36,6 @@ def menu():
         cap.set(3,wCam)
         cap.set(4,hCam)
 
-    while True:
         success, img = cap.read()
         cv2.imshow("Image",img)
         cv2.waitKey(1)
