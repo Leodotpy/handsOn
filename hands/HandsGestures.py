@@ -6,6 +6,7 @@ import os
 import ctypes
 import time
 import pyautogui
+import HandTrackModel
 
 pyautogui.PAUSE = 0
 pyautogui.FAILSAFE = False
@@ -29,49 +30,71 @@ def moveMouse(cx, cy, w, h):
     # mouse.click(button="left")
     # mouse.move(cx/w*monWidth,cy/h*monHeight)
     pyautogui.moveTo((cx - offsetX) / (w - (offsetX * 2)) * monWidth,
-               (cy - offsetY) / (h - (offsetY * 2)) * monHeight)
+                     (cy - offsetY) / (h - (offsetY * 2)) * monHeight)
 
+
+myHands = None
 
 while (True):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
-    frame = cv2.flip(frame, 1)
+    # frame = cv2.flip(frame, 1)
 
     # Our operations on the frame come here
-    camRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = hands.process(camRGB)
+    # camRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    # results = hands.process(camRGB)
     # print(results.multi_hand_landmarks)
 
     # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    if results.multi_hand_landmarks:
+    if myHands is None:
+        myHands = HandTrackModel.Track(len(frame[0]), len(frame), monWidth, monHeight)
+        print('set')
+    else:
+        frame, coordList = (myHands.get_hand_position(frame,[4,8]))
 
-        for handLms in results.multi_hand_landmarks:
 
-            # get landmark and index number for landmark
-            for id, lm in enumerate(handLms.landmark):
-                # print(id,lm)
+        #drawline
+        if len(coordList) == 2:
+            print(coordList[0])
+            cv2.line(frame,(coordList[0][0],coordList[0][1]),(coordList[1][0],coordList[1][1]), [0,255,255], 12)
 
-                w, h, c = frame.shape
-                cx, cy = int(lm.x * w), int(lm.y * h)
-                # print(id, cx,cy)
+            #draw circles
+            for point in coordList:
+                cv2.circle(frame, (point[0],point[1]), 15, [255, 255, 0])
 
-                if id == 8:
-                    moveMouse(cx, cy, w, h)
+        #print(myHands.get_hand_position())
 
-            mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)
+        # numOfHands = len(hands)
 
-    # perform a naive attempt to find the (x, y) coordinates of
-    # the area of the image with the largest intensity value
-    '''(minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
-    cv2.circle(cam, maxLoc, 5, (255, 0, 0), 2)'''
+        '''if results.multi_hand_landmarks:
+    
+            for handLms in results.multi_hand_landmarks:
+    
+                # get landmark and index number for landmark
+                for id, lm in enumerate(handLms.landmark):
+                    # print(id,lm)
+    
+                    w, h, c = frame.shape
+                    cx, cy = int(lm.x * w), int(lm.y * h)
+                    # print(id, cx,cy)
+    
+                    if id == 8:
+                        moveMouse(cx, cy, w, h)
+    
+                mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)'''
 
-    # Display the resulting frame
+        # perform a naive attempt to find the (x, y) coordinates of
+        # the area of the image with the largest intensity value
+        '''(minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
+        cv2.circle(cam, maxLoc, 5, (255, 0, 0), 2)'''
 
-    # frame = cv2.resize(frame,2)
+        # Display the resulting frame
 
-    cv2.imshow('frame', frame)
+        # frame = cv2.resize(frame,2)
+
+        cv2.imshow('frame', frame)
 
     # print(len(frame[0]), len(frame))
 
