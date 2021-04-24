@@ -1,13 +1,18 @@
 import pygame, sys #setup python
 import cv2, time
 
+#have it like google duo which has face in background with semi transparent grey
+
 #create pygame window/ set resolution
 mainClock = pygame.time.Clock()
 from pygame.locals import *
 pygame.init()
 pygame.display.set_caption('game')
-screen = pygame.display.set_mode((800,800),0,32)
+screenw, screenh = 800,800
+screen = pygame.display.set_mode((screenw,screenh),0,32)
 
+
+mainClock.tick(60)
 
 #font
 font = pygame.font.SysFont(None, 20)
@@ -24,22 +29,33 @@ click = False
 def menu():
     while True:
 
-        screen.fill((0,0,0))
+        wCam, hCam = 800,800
+
+        #screen.fill((97,97,97))
+        cap=cv2.VideoCapture(0)
+        cap.set(3,wCam)
+        cap.set(4,hCam)
+
+        success, img = cap.read()
+        cv2.imshow("Image",img)
+        cv2.waitKey(1)
+
         draw_text('main menu', font, (255,255,255), screen, 20, 20)
 
         #allows draw_text to be pressed
         mx, my = pygame.mouse.get_pos()
 
-        button_1=pygame.Rect(50,100,200,50)
-        button_2=pygame.Rect(50,200,200,50)
+        button_1=pygame.Rect(310,int(screenw/2),200,75)
+
         if button_1.collidepoint((mx,my)):
+            pygame.mouse.set_cursor(*pygame.cursors.arrow)
             if click:
                 game()
-        if button_2.collidepoint((mx,my)): #options maybe?
-            if click:
-                pass
+        else:
+            pygame.mouse.set_cursor(*pygame.cursors.diamond)
+
         pygame.draw.rect(screen,(255,0,0), button_1)
-        pygame.draw.rect(screen,(255,0,0), button_2)
+
 
         click = False
         for event in pygame.event.get():
@@ -53,11 +69,12 @@ def menu():
             if event.type == MOUSEBUTTONDOWN:
                 if event.button ==1:
                     click=True
+        pygame.display.flip()
 
 def game():
     running = True
     while running:
-        screen.fill((0,0,0))
+        screen.fill((255,0,0))
 
         draw_text('game', font, (255, 255, 255), screen, 20, 20)
         for event in pygame.event.get():
@@ -67,7 +84,6 @@ def game():
             if event.type==KEYDOWN:
                 if event.key == K_ESCAPE:
                     running = False
-    pygame.display.update()
-    mainClock.tick(60)
+        pygame.display.update()
 
 menu()
