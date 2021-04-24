@@ -39,7 +39,7 @@ def moveMouse(cx, cy, w, h):
 
 myHands = None
 
-pointLength = 3
+pointLength = 5
 
 lastPoints = [(0,0)]*pointLength
 
@@ -83,7 +83,12 @@ while (True):
 
         average = averageOfLast(lastPoints)
 
-        cv2.circle(frame, (average[0],average[1]), 15, [255, 255, 0])
+        cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
+
+        #cv2.circle(frame, (average[0],average[1]), 15, [255, 255, 0],20)
+
+        for coord in lastPoints:
+            cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)
 
 
 
