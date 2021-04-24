@@ -36,6 +36,14 @@ class DrawableWin:
         pygame.draw.rect(self.screen, (179, 43, 43), pygame.Rect(50, 50, 400, 200))
         pygame.draw.rect(self.screen, (237, 14, 14), pygame.Rect(50, 50, 400, 200 * button2Fac))
 
+        font = pygame.font.SysFont(None, 300)
+        img = font.render("Play", True, self.backCol)
+        self.screen.blit(img, (c.halfDims[0] + 250, c.halfDims[1] - 100))
+
+        font = pygame.font.SysFont(None, 200)
+        img = font.render("Exit", True, self.backCol)
+        self.screen.blit(img, (100, 90))
+
         for i in range(len(mouseCoords)):
             co.draw_circle_alpha(self.screen, (255, 255, 255, 255*(i/(len(mouseCoords)-1))), mouseCoords[i], 50, 5)
         pygame.display.flip()
@@ -51,10 +59,8 @@ class DrawableWin:
             t.sleep(0.005)
 
         for i in range(50):
-            self.drawFrameGameover(False)
-            self.ball.drawRed(self.screen)
+            self.drawFrameGameover([(0, 0), (0, 0)], 0, 0, False)
             co.draw_rect_alpha(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255*(1-(i/49))), pygame.Rect(0,0, c.windowDims[0], c.windowDims[1]))
-            self.ball.drawRed(self.screen)
             pygame.display.flip()
             pygame.display.update()
             t.sleep(0.005)
@@ -63,16 +69,22 @@ class DrawableWin:
     def drawFrameGameover(self, mouseCoords, button1Fac, button2Fac, update):
         pygame.mouse.set_visible(False)
         self.screen.fill(self.backCol)
-        pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] - 50, c.halfDims[1] - 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
-        pygame.draw.rect(self.screen, (255, 163, 43), pygame.Rect(c.halfDims[0] - 50, c.halfDims[1] - 50, c.halfDims[0] - 100, c.windowDims[1] - 100) * button1Fac)
-        pygame.draw.rect(self.screen, (179, 43, 43), pygame.Rect(50, 50, 400, 200))
-        pygame.draw.rect(self.screen, (237, 14, 14), pygame.Rect(50, 50, 400, 200 * button2Fac))
+        pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.halfDims[1] - 100))
+        pygame.draw.rect(self.screen, (255, 163, 43), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, (c.halfDims[1] - 100) * button1Fac))
+        pygame.draw.rect(self.screen, (179, 43, 43), pygame.Rect(50, 50, c.halfDims[0] - 100, c.halfDims[1] - 100))
+        pygame.draw.rect(self.screen, (237, 14, 14), pygame.Rect(50, 50, c.halfDims[0] - 100, (c.halfDims[1] - 100) * button2Fac))
 
-        font = pygame.font.SysFont(None, 50)
+        font = pygame.font.SysFont(None, 200)
+        img = font.render("Retry", True, self.backCol)
+        self.screen.blit(img, (c.halfDims[0] + 290, c.halfDims[1] - 330))
+
+        font = pygame.font.SysFont(None, 200)
+        img = font.render("Exit", True, self.backCol)
+        self.screen.blit(img, (330, c.halfDims[1] - 330))
+
+        font = pygame.font.SysFont(None, 350)
         img = font.render('Game Over', True, (255, 255, 255))
-        self.screen.blit(img, (c.halfDims[0], c.halfDims[1]))
-        img = font.render('Restart', True, (255, 255, 255))
-        self.screen.blit(img, (c.halfDims[0], c.halfDims[1]-100))
+        self.screen.blit(img, (50, c.windowDims[1] - 540))
 
         for i in range(len(mouseCoords)):
             co.draw_circle_alpha(self.screen, (255, 255, 255, 255*(i/(len(mouseCoords)-1))), mouseCoords[i], 50, 5)
@@ -81,17 +93,35 @@ class DrawableWin:
             pygame.display.flip()
             pygame.display.update()
 
-    def activateGame(self):
-        for i in range(5):
-            self.screen.fill(self.backCol)
-            pygame.draw.rect(self.screen, (207, 154, 85), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
-            pygame.display.flip()
-            pygame.display.update()
-            t.sleep(0.05)
-            pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
-            pygame.display.flip()
-            pygame.display.update()
-            t.sleep(0.05)
+    def activateGame(self, menu1):
+        if menu1:
+            for i in range(5):
+                self.screen.fill(self.backCol)
+                pygame.draw.rect(self.screen, (207, 154, 85), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
+                pygame.display.flip()
+                pygame.display.update()
+                t.sleep(0.05)
+                pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
+                pygame.display.flip()
+                pygame.display.update()
+                t.sleep(0.05)
+        else:
+            for i in range(5):
+                self.screen.fill(self.backCol)
+                pygame.draw.rect(self.screen, (207, 154, 85), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.halfDims[1] - 100))
+                font = pygame.font.SysFont(None, 200)
+                img = font.render("Retry", True, self.backCol)
+                self.screen.blit(img, (c.halfDims[0] + 290, c.halfDims[1] - 330))
+                pygame.display.flip()
+                pygame.display.update()
+                t.sleep(0.05)
+                pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.halfDims[1] - 100))
+                font = pygame.font.SysFont(None, 200)
+                img = font.render("Retry", True, self.backCol)
+                self.screen.blit(img, (c.halfDims[0] + 290, c.halfDims[1] - 330))
+                pygame.display.flip()
+                pygame.display.update()
+                t.sleep(0.05)
 
         for i in range(50):
             self.drawFrameGame(False)
