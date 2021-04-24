@@ -9,7 +9,7 @@ import pyautogui as mouse
 
 
 class Track:
-    def __init__(self, fw, fh, monWidth, monHeight):
+    def __init__(self, fw, fh):
 
         self.mpHands = mp.solutions.hands
 
@@ -22,9 +22,6 @@ class Track:
 
         self.w = fw
         self.h = fh
-
-        self.monWidth = monWidth
-        self.monHeight = monHeight
 
     # Gets hand positions --> returns list: hand_list[integer: hand
     def get_hand_position(self, frame, pointList):
@@ -42,12 +39,11 @@ class Track:
                     h, w, c = frame.shape
 
                     cx, cy = int(lm.x * w), int(lm.y * h)
-                    #print(id, cx, cy)
+                    # print(id, cx, cy)
 
-                    #print(point, pointList[point])
-                    if point <= len(pointList)-1:
+                    # print(point, pointList[point])
+                    if point <= len(pointList) - 1:
                         if id == int(pointList[point]):
-
                             coordList.append([cx, cy])
 
                             point += 1
@@ -57,4 +53,3 @@ class Track:
         return frame, coordList
         # self.hand_list.append(handLms.landmark)
         # return self.hand_list
-

@@ -70,7 +70,7 @@ while (True):
 
     # setup hands model if it does not exist
     if myHands is None:
-        myHands = HandTrackModel.Track(len(frame[0]), len(frame), monWidth, monHeight)
+        myHands = HandTrackModel.Track(len(frame[0]), len(frame))
         print('set')
     else:
         # pass the frame and list of points for tracking

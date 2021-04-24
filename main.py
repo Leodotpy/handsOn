@@ -5,6 +5,10 @@ import WinGUI
 import pygame
 from pingPong.constants import Constants as c
 
+import hands.HandTrackModel as HandTrackModel
+import cv2
+
+
 width, height = 1920, 1080
 
 bounds = [M.BoundRect(M.Vector3(-500, -500, 0), M.Vector3(500, 500, 1000), M.Vector3(0, 0, 0), True)]
@@ -22,7 +26,37 @@ w = WinGUI.DrawableWin(ball)
 running = True
 
 lastTime = time.time()
-prevMouseX, prevMouseY = pygame.mouse.get_pos()
+
+# set up webcam video capture device
+cap = cv2.VideoCapture(1)
+
+#prevPaddleX, prevPaddleY = pygame.mouse.get_pos()
+prevPaddleX, prevPaddleY = 0,0
+
+
+myHands = None
+
+# points stored in memory for averaging
+pointLength = 16
+lastPoints = [(0, 0)] * pointLength
+
+# calculate the average of the last points
+def averageOfLast(points):
+    # average = [int(np.mean(points[0])),int(np.mean(points[1]))]
+    vx = 0
+    vy = 0
+
+    for v in range(len(points) - 1):
+        vx = points[v][0] + vx
+        vy = points[v][1] + vy
+
+    average = (int(vx / (len(points) - 1)), int(vy / (len(points) - 1)))
+
+    # print(points)
+    # print(average)
+    return average
+
+average = (0,0)
 while running:
     # Calculate delta time in seconds
     currentTime = time.time()
@@ -35,9 +69,42 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    mouseX, mouseY = pygame.mouse.get_pos()
+    ret, frame = cap.read()
 
-    deltaBlock = M.Vector3(mouseX - c.halfDims[0], c.windowDims[1]-mouseY-c.halfDims[1], 50)
+    # setup hands model if it does not exist
+    if myHands is None:
+        myHands = HandTrackModel.Track(len(frame[0]), len(frame))
+        print('set')
+    else:
+        # pass the frame and list of points for tracking
+        frame, coordList = (myHands.get_hand_position(frame, [4]))
+
+        # remove the last point in the list and add the new one
+        if coordList:
+            lastPoints.pop(0)
+            lastPoints.append(coordList[0])
+
+            '''for i in range(len(lastPoints)-1):
+                cv2.circle(frame, (lastPoints[i][0],lastPoints[i][1]), 15, [255, 255, 0])'''
+
+        # get the average of the points
+        average = averageOfLast(lastPoints)
+
+        # circle each of the last points and the average point
+        for coord in lastPoints:
+            cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)
+
+        cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
+
+        # display the resulting frame
+        cv2.imshow('frame', frame)
+
+
+    #paddleX, paddleY = pygame.mouse.get_pos()
+
+    paddleX, paddleY = average[0],average[1]
+
+    deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)
     ball.bounds[2].moveBlock(M.Vector3(ball.pos.x, ball.pos.y, 0))
 
