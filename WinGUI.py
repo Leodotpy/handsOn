@@ -1,12 +1,12 @@
 import numpy
 import pygame
 from pygame import *
-import Physics.Ball as b
+from Physics import Ball as b
 
 
 class DrawableWin:
     # Declare Width and Height of window
-    width, height = 500, 500
+    width, height = 1920, 1080
     #background color
     backCol = [16, 16, 16]
     ballCol = [200, 200, 200]
@@ -26,6 +26,6 @@ class DrawableWin:
 
     def drawFrame(self):
         self.screen.fill(self.backCol)
-        pygame.draw.circle(self.screen, (255, 255, 255), (self.ball.pos.x, self.ball.pos.y), 100)
+        self.ball.draw(self.screen)
         pygame.display.flip()
         pygame.display.update()
