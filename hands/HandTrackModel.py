@@ -18,4 +18,6 @@ def get_hand_position(frame):
     if results.multi_hand_landmarks:
         for handLms in results.multi_hand_landmarks:
             hand_list.append(handLms.landmark)
+
+
     return hand_list

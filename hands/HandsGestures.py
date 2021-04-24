@@ -6,6 +6,7 @@ import os
 import ctypes
 import time
 import pyautogui
+import HandTrackModel
 
 pyautogui.PAUSE = 0
 pyautogui.FAILSAFE = False
@@ -36,16 +37,32 @@ while (True):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
-    frame = cv2.flip(frame, 1)
+    #frame = cv2.flip(frame, 1)
 
     # Our operations on the frame come here
-    camRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = hands.process(camRGB)
+    #camRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    #results = hands.process(camRGB)
     # print(results.multi_hand_landmarks)
 
     # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    if results.multi_hand_landmarks:
+
+
+    hands = HandTrackModel.get_hand_position(frame)
+
+    numOfHands = len(hands)
+
+    if numOfHands == 1:
+        cv2.circle(frame, (int(hands[0][mpHands.HandLandmark.INDEX_FINGER_TIP].x), int(hands[0][mpHands.HandLandmark.INDEX_FINGER_TIP].y)), 105, [255,255,0])
+
+
+
+
+
+
+
+
+    '''if results.multi_hand_landmarks:
 
         for handLms in results.multi_hand_landmarks:
 
@@ -60,7 +77,7 @@ while (True):
                 if id == 8:
                     moveMouse(cx, cy, w, h)
 
-            mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)
+            mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)'''
 
     # perform a naive attempt to find the (x, y) coordinates of
     # the area of the image with the largest intensity value
