@@ -1,12 +1,6 @@
-import Math as m
-import main
-
+import Physics.Math as m
 
 class Ball:
-    radius = 0
-    pos = m.Vector3(0, 0, 0)
-    velocity = m.Vector3(0, 0, 0)
-    bounds = [m.BoundRect]
 
     def __init__(self, radius, pos, velocity, bounds):
         self.radius = radius
@@ -16,37 +10,37 @@ class Ball:
 
     def PhysicsTick(self, t):
         # Move with velocity
-        self.pos = self.pos.Add(self.velocity.Multiply(t))
+        self.pos = self.pos.add(self.velocity.multiply(t))
         # Gravity application
-        self.velocity = self.velocity.Add(main.gravity.Multiply(t))
+        #self.velocity = self.velocity.Add(main.gravity.Multiply(t))
 
-        for bound in self.bounds:
+        for i in range(len(self.bounds)):
             # Case for solid rectangular prism
-            if not bound.concave:
+            if not self.bounds[i].concave:
                 # Left of sphere hits right of box
-                if self.pos.x - self.radius < bound.C2.x:
-                    self.pos.x = bound.C2.x + self.radius
+                if self.pos.x - self.radius < self.bounds[i].C2.x:
+                    self.pos.x = self.bounds[i].C2.x + self.radius
                     self.velocity.x = -self.velocity.x
                 # Right of sphere hits left of box
-                if self.pos.x + self.radius > bound.C1.x:
-                    self.pos.x = bound.C1.x - self.radius
+                if self.pos.x + self.radius > self.bounds[i].C1.x:
+                    self.pos.x = self.bounds[i].C1.x - self.radius
                     self.velocity.x = -self.velocity.x
 
                 # Bottom of sphere hits top of box
-                if self.pos.y - self.radius < bound.C2.y:
-                    self.pos.y = bound.C2.y + self.radius
+                if self.pos.y - self.radius < self.bounds[i].C2.y:
+                    self.pos.y = self.bounds[i].C2.y + self.radius
                     self.velocity.y = -self.velocity.y
                 # Top of sphere hits bottom of box
-                if self.pos.y + self.radius > bound.C1.y:
-                    self.pos.y = bound.C1.y - self.radius
+                if self.pos.y + self.radius > self.bounds[i].C1.y:
+                    self.pos.y = self.bounds[i].C1.y - self.radius
                     self.velocity.y = -self.velocity.y
 
                 # Back of sphere hits front of box
-                if self.pos.z - self.radius < bound.C2.z:
-                    self.pos.z = bound.C2.z + self.radius
+                if self.pos.z - self.radius < self.bounds[i].C2.z:
+                    self.pos.z = self.bounds[i].C2.z + self.radius
                     self.velocity.z = -self.velocity.z
                 # Front of sphere hits back of box
-                if self.pos.z + self.radius > bound.C1.z:
-                    self.pos.z = bound.C1.z - self.radius
+                if self.pos.z + self.radius > self.bounds[i].C1.z:
+                    self.pos.z = self.bounds[i].C1.z - self.radius
                     self.velocity.z = -self.velocity.z
 

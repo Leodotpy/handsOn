@@ -1,5 +1,6 @@
 import math
 
+
 class Vector3:
     x, y, z = 0, 0, 0
 
@@ -48,6 +49,7 @@ class Vector3:
 class BoundRect:
     C1, C2 = Vector3(0, 0, 0), Vector3(0, 0, 0)
     concave = False
+
     def __init__(self, C1, C2, concave):
         self.C1 = C1
         self.C2 = C2
