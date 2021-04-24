@@ -26,8 +26,9 @@ lastTime = time.time()
 
 # set up webcam video capture device
 for i in range(4):
+    cap = cv2.VideoCapture(1)
     try:
-        cap = cv2.VideoCapture(i)
+        print(cap.read())
         break
     except:
         pass
