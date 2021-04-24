@@ -1,5 +1,5 @@
 import pygame, sys #setup python
-import cv2, time
+
 
 #have it like google duo which has face in background with semi transparent grey
 
@@ -7,6 +7,8 @@ import cv2, time
 mainClock = pygame.time.Clock()
 from pygame.locals import *
 pygame.init()
+icon = pygame.image.load('ping.png')
+pygame.display.set_icon(icon)
 pygame.display.set_caption('game')
 screenw, screenh = 800,800
 screen = pygame.display.set_mode((screenw,screenh),0,32)
@@ -26,27 +28,14 @@ def draw_text (text, font, colour, surface, x, y):
 
 click = False
 
-cap=cv2.VideoCapture(0)
+
 
 def menu():
     while True:
 
-        wCam, hCam = 800,800
-
-        #screen.fill((97,97,97))
-
-        #cap.set(3,wCam)
-        #cap.set(4,hCam)
-
-        ret, img = cap.read()
-
-        #success, img = cap.read()
-        cv2.imshow("Image",img)
-        #cv2.waitKey(1)
-
         draw_text('main menu', font, (255,255,255), screen, 20, 20)
 
-        #allows draw_text to be pressed
+        #allows box to be pressed
         mx, my = pygame.mouse.get_pos()
 
         button_1=pygame.Rect(310,int(screenw/2),200,75)
@@ -75,6 +64,7 @@ def menu():
                     click=True
         pygame.display.flip()
 
+#game
 def game():
     running = True
     while running:
@@ -87,7 +77,7 @@ def game():
                 sys.exit()
             if event.type==KEYDOWN:
                 if event.key == K_ESCAPE:
-                    running = False
+                    menu()
         pygame.display.update()
 
 menu()
