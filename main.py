@@ -21,6 +21,7 @@ w = WinGUI.DrawableWin(ball)
 
 
 running = True
+
 hasCamera = False
 
 lastTime = time.time()
