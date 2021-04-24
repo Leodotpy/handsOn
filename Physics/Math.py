@@ -94,7 +94,7 @@ class BoundRect:
         pygame.draw.line(screen, (200, 200, 200), (self.C1.x*c2Fac+c.halfDims[0], c.windowDims[1]-self.C1.y*c2Fac-c.halfDims[1]), (self.C2.x*c2Fac+c.halfDims[0], c.windowDims[1]-self.C1.y*c2Fac-c.halfDims[1]), width)
 
         # Bottom Left
-        pygame.draw.line(screen, (200, 200, 200),
+        pygame.draw.line(screen, (255, 255, 255),
                          (self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c1Fac - c.halfDims[1]),
                          (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c2Fac - c.halfDims[1]),
                          width)

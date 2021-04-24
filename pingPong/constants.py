@@ -19,3 +19,5 @@ class Constants(object):
 
     mpDraw = mp.solutions.drawing_utils
     monWidth, monHeight = pyautogui.size()
+
+    score = 0
