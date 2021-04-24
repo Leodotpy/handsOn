@@ -1,5 +1,5 @@
 import math
-
+import pygame
 
 class Vector3:
     x, y, z = 0, 0, 0
@@ -54,3 +54,6 @@ class BoundRect:
         self.C1 = C1
         self.C2 = C2
         self.concave = concave
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, (0, 0, 0), (self.C1.x, self.C1.y, 2*self.C1.x - self.C2.x, 2*self.C1.y-self.C2.y))
