@@ -7,8 +7,8 @@ import pygame
 width, height = 1920, 1080
 gravity = M.Vector3(0, -9.8, 0)
 
-floor = [M.BoundRect(M.Vector3(-20, 0, -20), M.Vector3(20, 1, 20), False)]
-ball = B.Ball(50, M.Vector3(0, 100, 0), M.Vector3(2, 0, 0), floor)
+floor = [M.BoundRect(M.Vector3(-2000, 0, -2000), M.Vector3(2000, 1, 2000), False)]
+ball = B.Ball(50, M.Vector3(0, 100, 0), M.Vector3(0, 0, 100), floor)
 w = WinGUI.DrawableWin(ball)
 
 running = True

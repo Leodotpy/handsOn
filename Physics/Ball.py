@@ -51,7 +51,10 @@ class Ball:
                     if self.pos.z + self.radius > self.bounds[i].C1.z > self.pos.z - self.radius:
                         self.pos.z = self.bounds[i].C1.z - self.radius
                         self.velocity.z = -self.velocity.z
+            else
 
 
     def draw(self, screen):
-        pygame.draw.circle(screen, (255, 255, 255), (self.pos.x + (1920/2), 1080-self.pos.y - (1080/2)), self.radius)
+        if self.pos.z == 0:
+            self.pos.z = 1
+        pygame.draw.circle(screen, (255, 255, 255), (self.pos.x + (1920/2), 1080-self.pos.y - (1080/2)), self.radius * (1000/self.pos.z))
