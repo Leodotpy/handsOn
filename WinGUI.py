@@ -1,6 +1,7 @@
 import numpy
 import pygame
 from pygame import *
+from Physics import Ball as b
 
 
 class DrawableWin:
@@ -10,57 +11,23 @@ class DrawableWin:
     backCol = [16, 16, 16]
     ballCol = [200, 200, 200]
 
-    def __init__(self):
+    ball = b.Ball
+    screen = pygame.display.set_mode([width, height])
+
+    def __init__(self, ball):
+        self.ball = ball
         pygame.init()
-        screen = pygame.display.set_mode([self.width, self.height])
+        self.screen = pygame.display.set_mode([self.width, self.height])
         running = True
+        # Fill the background with white
+        self.screen.fill(self.backCol)
+        pygame.mouse.set_visible(False)
+        clock = pygame.time.Clock()
 
-
-circleColorR, circleColorG, circleColorB = 140, 136, 138
-
-pygame.mouse.set_visible(False)
-
-clock = pygame.time.Clock()
-
-while running:
-
-    clock.tick(600)
-    # Did the user click the window close button?
-
-    for event in pygame.event.get():
-
-        if event.type == pygame.QUIT:
-            running = False
-
-    # Fill the background with white
-    screen.fill((backR, backG, backB))
-
-
-    def getMouseCoords():
-        x, y = pygame.mouse.get_pos()
-        return (x, y)
-
-
-    # Draw a solid blue circle in the center
-
-    lastPoints.pop(0)
-    lastPoints.append(getMouseCoords())
-
-    for i in range(trailLength):
-        # circleColorR, circleColorG, circleColorB
-
-        temp = i / trailLength
-
-        currentColorR, currentColorG, currentColorB = int(circleColorR * temp + backR * (1 - temp)), int(
-            circleColorG * temp + backG * (1 - temp)), int(circleColorB * temp + backB * (1 - temp))
-
-        # print(currentColorR, currentColorG, currentColorB)
-        pygame.draw.circle(screen, (currentColorR, currentColorG, currentColorB), (lastPoints[i]), 100)
-
-    # Flip the display
-
-    pygame.display.flip()
-
-# Done! Time to quit.
-
-pygame.quit()
+    def drawFrame(self):
+        self.screen.fill(self.backCol)
+        self.ball.draw(self.screen)
+        for i in range(len(self.ball.bounds)):
+            self.ball.bounds[i].draw(self.screen, 2)
+        pygame.display.flip()
+        pygame.display.update()

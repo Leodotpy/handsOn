@@ -2,3 +2,9 @@
     - Be able to get the location of any finger
     - develop gestures
 
+*Ping Pong game
+    - Draw start game GUI
+    - Once start game
+    - Display table
+    - Display Ball (dynamic)
+    - Display Paddles (
