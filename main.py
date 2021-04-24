@@ -21,7 +21,7 @@ w = WinGUI.DrawableWin(ball)
 
 
 running = True
-hasCamera = False
+hasCamera = True
 
 lastTime = time.time()
 # set up webcam video capture device
@@ -103,6 +103,7 @@ while running:
         if myHands is None:
             myHands = HandTrackModel.Track(len(frame[0]), len(frame))
             print('set')
+            mouseCoords = (prevPaddleX, prevPaddleY)
         else:
             # pass the frame and list of points for tracking
             frame, coordList = (myHands.get_hand_position(frame, [4]))
