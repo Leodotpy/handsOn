@@ -84,6 +84,12 @@ def setPoints(coordList):
 average = (0,0)
 paddleX, paddleY = average
 
+mouseCoords = (0, 0)
+pointLength = 8
+lastPoints = [(0, 0)] * pointLength
+
+button1Fac = 0
+button2Fac = 0
 
 while running:
     # Calculate delta time in seconds
@@ -91,11 +97,11 @@ while running:
     deltaTime = (currentTime - lastTime)
     lastTime = currentTime
 
-    if hasCamera:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
+    if hasCamera:
         ret, frame = cap.read()
 
         # setup hands model if it does not exist
@@ -108,16 +114,42 @@ while running:
 
             paddleX, paddleY = setPoints(coordList)
 
-
     deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)
     ball.bounds[2].moveBlock(M.Vector3(ball.pos.x, ball.pos.y, 0))
 
+    mouseCoords = pygame.mouse.get_pos()
+    if not hasCamera:
+        paddleX, paddleY = mouseCoords
+    lastPoints.pop(0)
+    lastPoints.append(mouseCoords)
+
     if not inMenu:
         ball.PhysicsTick(deltaTime)
-        w.drawFrameGame()
+        w.drawFrameGame(True)
     else:
-        w.drawFrameMenu()
+        # c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100
+        if c.halfDims[0] + 50 < mouseCoords[0] < c.windowDims[0] - 50 and 50 < mouseCoords[1] < c.windowDims[1] - 50:
+            button1Fac += 0.007
+            if button1Fac > 1:
+                button1Fac = 1
+                if w.activateGame():
+                    inMenu = False
+        else:
+            button1Fac -= 0.01
+            if button1Fac < 0:
+                button1Fac = 0
+
+        if 50 < mouseCoords[0] < 450 and 50 < mouseCoords[1] < 250:
+            button2Fac += 0.007
+            if button2Fac > 1:
+                button2Fac = 1
+        else:
+            button2Fac -= 0.01
+            if button2Fac < 0:
+                button2Fac = 0
+
+        w.drawFrameMenu(lastPoints, button1Fac, button2Fac)
 
 
 

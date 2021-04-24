@@ -5,7 +5,6 @@ from pingPong.constants import Constants as c
 
 
 class Ball:
-
     def __init__(self, radius, pos, velocity, bounds):
         self.radius = radius
         self.pos = pos
