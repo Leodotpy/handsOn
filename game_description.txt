@@ -1,0 +1,7 @@
+Welcome to the ultimate game of 3D PONG!
+There are two modes to play.
+The first mode uses your mouse to move the paddle.
+The second mode uses the movement of you're hand in real life!
+If you are using the second mode, ensure that you enable your camera,
+turn on the lights in your room, and start playing!
+Do you're best to move the paddle and deflect the ball to reach your highest score!
