@@ -5,7 +5,9 @@ import numpy as np
 import os
 import ctypes
 import time
-import mouse
+import pyautogui
+
+pyautogui.PAUSE = 0
 
 cap = cv2.VideoCapture(1)
 
@@ -14,7 +16,7 @@ hands = mpHands.Hands()
 
 mpDraw = mp.solutions.drawing_utils
 
-monWidth, monHeight = 3840, 2160
+monWidth, monHeight = pyautogui.size()
 
 print(monWidth, monHeight)
 
@@ -25,7 +27,7 @@ def moveMouse(cx, cy, w, h):
 
     # mouse.click(button="left")
     # mouse.move(cx/w*monWidth,cy/h*monHeight)
-    mouse.move((cx - offsetX) / (w - (offsetX * 2)) * monWidth,
+    pyautogui.moveTo((cx - offsetX) / (w - (offsetX * 2)) * monWidth,
                (cy - offsetY) / (h - (offsetY * 2)) * monHeight)
 
 
