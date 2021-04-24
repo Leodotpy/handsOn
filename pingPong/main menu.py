@@ -26,19 +26,23 @@ def draw_text (text, font, colour, surface, x, y):
 
 click = False
 
+cap=cv2.VideoCapture(0)
+
 def menu():
     while True:
 
         wCam, hCam = 800,800
 
         #screen.fill((97,97,97))
-        cap=cv2.VideoCapture(0)
-        cap.set(3,wCam)
-        cap.set(4,hCam)
 
-        success, img = cap.read()
+        #cap.set(3,wCam)
+        #cap.set(4,hCam)
+
+        ret, img = cap.read()
+
+        #success, img = cap.read()
         cv2.imshow("Image",img)
-        cv2.waitKey(1)
+        #cv2.waitKey(1)
 
         draw_text('main menu', font, (255,255,255), screen, 20, 20)
 

@@ -1,3 +1,5 @@
+import math
+
 import cv2
 import mediapipe as mp
 from mediapipe import solutions
@@ -7,6 +9,8 @@ import ctypes
 import time
 import pyautogui
 import HandTrackModel
+from rich import print
+
 
 pyautogui.PAUSE = 0
 pyautogui.FAILSAFE = False
@@ -35,6 +39,15 @@ def moveMouse(cx, cy, w, h):
 
 myHands = None
 
+pointLength = 25
+
+lastPoints = [(0,0)]*pointLength
+
+
+
+
+
+
 while (True):
     # Capture frame-by-frame
     ret, frame = cap.read()
@@ -52,19 +65,47 @@ while (True):
         myHands = HandTrackModel.Track(len(frame[0]), len(frame), monWidth, monHeight)
         print('set')
     else:
+
+
+
+
         frame, coordList = (myHands.get_hand_position(frame,[4,8]))
 
+        if coordList != [[0,0],[0,0]]:
+            lastPoints.pop(0)
+            lastPoints.append(coordList)
 
-        #drawline
-        if len(coordList) == 2:
-            print(coordList[0])
+            #print(lastPoints)
+
+            for point in lastPoints:
+                try:
+                    cv2.circle(frame, (point[0]), 15, [255, 255, 0])
+                    cv2.circle(frame, (point[1]), 15, [255, 255, 0])
+                except:
+                    print('failed')
+
+        #print(coordList)
+
+
+
+
+
+
+
+        # drawline
+        '''if len(coordList) == 2:
+            # print(coordList[0])
             cv2.line(frame,(coordList[0][0],coordList[0][1]),(coordList[1][0],coordList[1][1]), [0,255,255], 12)
 
-            #draw circles
-            for point in coordList:
-                cv2.circle(frame, (point[0],point[1]), 15, [255, 255, 0])
+            lineLength = math.hypot(coordList[1][0] - coordList[0][0],coordList[1][1]-coordList[0][1])
+            #print(lineLength)
 
-        #print(myHands.get_hand_position())
+            # draw circles
+            for point in coordList:
+                cv2.circle(frame, (point[0],point[1]), 15, [255, 255, 0])'''
+
+
+        # print(myHands.get_hand_position())
 
         # numOfHands = len(hands)
 
@@ -84,6 +125,7 @@ while (True):
                         moveMouse(cx, cy, w, h)
     
                 mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)'''
+
 
         # perform a naive attempt to find the (x, y) coordinates of
         # the area of the image with the largest intensity value
