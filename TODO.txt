@@ -1,0 +1,4 @@
+*Hand gestures
+    - Be able to get the location of any finger
+    - develop gestures
+
