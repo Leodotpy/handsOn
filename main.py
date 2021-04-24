@@ -21,6 +21,8 @@ ball = B.Ball(50, M.Vector3(0, 0, 500), M.Vector3(1000, 100, 1000), bounds)
 w = WinGUI.DrawableWin(ball)
 
 running = True
+inMenu = True
+hasCamera = False
 
 lastTime = time.time()
 
@@ -89,42 +91,34 @@ while running:
     deltaTime = (currentTime - lastTime)
     lastTime = currentTime
 
-    ball.PhysicsTick(deltaTime)
+    if hasCamera:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        ret, frame = cap.read()
 
-    ret, frame = cap.read()
+        # setup hands model if it does not exist
+        if myHands is None:
+            myHands = HandTrackModel.Track(len(frame[0]), len(frame))
+            print('set')
+        else:
+            # pass the frame and list of points for tracking
+            frame, coordList = (myHands.get_hand_position(frame, [4]))
 
-    # setup hands model if it does not exist
-    if myHands is None:
-        myHands = HandTrackModel.Track(len(frame[0]), len(frame))
-        print('set')
-    else:
-        # pass the frame and list of points for tracking
-        frame, coordList = (myHands.get_hand_position(frame, [4]))
-
-        paddleX, paddleY = setPoints(coordList)
-
-
-
-        
-
-        #cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
-
-        # display the resulting frame
-        #cv2.imshow('frame', frame)
-
-
-    #paddleX, paddleY = pygame.mouse.get_pos()
+            paddleX, paddleY = setPoints(coordList)
 
 
     deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)
     ball.bounds[2].moveBlock(M.Vector3(ball.pos.x, ball.pos.y, 0))
 
-    w.drawFrame()
+    if not inMenu:
+        ball.PhysicsTick(deltaTime)
+        w.drawFrameGame()
+    else:
+        w.drawFrameMenu()
+
 
 
 pygame.quit()
