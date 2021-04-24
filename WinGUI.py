@@ -25,7 +25,14 @@ class DrawableWin:
         #pygame.mouse.set_visible(False)
         clock = pygame.time.Clock()
 
-    def drawFrame(self):
+    def drawFrameMenu(self):
+        self.screen.fill(self.backCol)
+        pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
+        pygame.draw.rect(self.screen, (179, 43, 43), pygame.Rect(50, 50, 400, 200))
+        pygame.display.flip()
+        pygame.display.update()
+
+    def drawFrameGame(self):
         self.screen.fill(self.backCol)
         font = pygame.font.SysFont(None, 70)
         img = font.render('Score:' + str(c.score), True, (255, 255, 255))
