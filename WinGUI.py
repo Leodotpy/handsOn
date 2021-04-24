@@ -45,14 +45,14 @@ class DrawableWin:
         self.screen.blit(img, (100, 90))
 
         for i in range(len(mouseCoords)):
-            co.draw_circle_alpha(self.screen, (255, 255, 255, 255*(i/(len(mouseCoords)-1))), mouseCoords[i], 50, 5)
+            co.drawCircle(self.screen, (255, 255, 255, 255 * (i / (len(mouseCoords) - 1))), mouseCoords[i], 50, 5)
         pygame.display.flip()
         pygame.display.update()
 
     def activateGameOver(self):
         for i in range(50):
             self.drawFrameGame(False)
-            co.draw_rect_alpha(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255*(i/49)), pygame.Rect(0,0, c.windowDims[0], c.windowDims[1]))
+            co.drawRect(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255 * (i / 49)), pygame.Rect(0, 0, c.windowDims[0], c.windowDims[1]))
             self.ball.drawRed(self.screen)
             pygame.display.flip()
             pygame.display.update()
@@ -60,7 +60,7 @@ class DrawableWin:
 
         for i in range(50):
             self.drawFrameGameover([(0, 0), (0, 0)], 0, 0, False)
-            co.draw_rect_alpha(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255*(1-(i/49))), pygame.Rect(0,0, c.windowDims[0], c.windowDims[1]))
+            co.drawRect(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255 * (1 - (i / 49))), pygame.Rect(0, 0, c.windowDims[0], c.windowDims[1]))
             pygame.display.flip()
             pygame.display.update()
             t.sleep(0.005)
@@ -87,7 +87,7 @@ class DrawableWin:
         self.screen.blit(img, (50, c.windowDims[1] - 540))
 
         for i in range(len(mouseCoords)):
-            co.draw_circle_alpha(self.screen, (255, 255, 255, 255*(i/(len(mouseCoords)-1))), mouseCoords[i], 50, 5)
+            co.drawCircle(self.screen, (255, 255, 255, 255 * (i / (len(mouseCoords) - 1))), mouseCoords[i], 50, 5)
 
         if update:
             pygame.display.flip()
@@ -125,7 +125,7 @@ class DrawableWin:
 
         for i in range(50):
             self.drawFrameGame(False)
-            co.draw_rect_alpha(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255*(1-(i/49))), pygame.Rect(0,0, c.windowDims[0], c.windowDims[1]))
+            co.drawRect(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255 * (1 - (i / 49))), pygame.Rect(0, 0, c.windowDims[0], c.windowDims[1]))
             pygame.display.flip()
             pygame.display.update()
             t.sleep(0.005)

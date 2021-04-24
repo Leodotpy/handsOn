@@ -103,6 +103,7 @@ while running:
         if myHands is None:
             myHands = HandTrackModel.Track(len(frame[0]), len(frame))
             print('set')
+            mouseCoords = (0, 0)
         else:
             # pass the frame and list of points for tracking
             frame, coordList = (myHands.get_hand_position(frame, [4]))
@@ -113,10 +114,10 @@ while running:
                 lastPoints.append(coordList[0])
             #mouseCoords = setPoints(coordList)
 
-            posX = c.windowDims[0] * (average[0] / myHands.w) / 2
-            posY = c.windowDims[1] * (average[1] / myHands.h) / 2
+            posX = c.windowDims[0] * (average[0] / myHands.w) * 2
+            posY = c.windowDims[1] * (average[1] / myHands.h) * 2
 
-            mouseCoords = posX, posY
+            mouseCoords = (posX, posY)
             '''for i in range(len(lastPoints)-1):
                 cv2.circle(frame, (lastPoints[i][0],lastPoints[i][1]), 15, [255, 255, 0])'''
 

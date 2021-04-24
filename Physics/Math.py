@@ -129,7 +129,7 @@ class BoundRect:
                 (self.C2.x*c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y*c2Fac - c.halfDims[1]),
                 (self.C2.x*c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y*c1Fac - c.halfDims[1])]
 
-        co.draw_polygon_alpha(screen, col, points)
+        co.drawPoly(screen, col, points)
         if (self.rightVal > 0):
             self.rightVal -= self.fadeAmount
         else:
@@ -146,7 +146,7 @@ class BoundRect:
                   (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1]),
                   (self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1])]
 
-        co.draw_polygon_alpha(screen, col, points)
+        co.drawPoly(screen, col, points)
         if (self.leftVal > 0):
             self.leftVal -= self.fadeAmount
         else:
@@ -163,7 +163,7 @@ class BoundRect:
                   (self.C2.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1]),
                   (self.C2.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1])]
 
-        co.draw_polygon_alpha(screen, col, points)
+        co.drawPoly(screen, col, points)
         if (self.topVal > 0):
             self.topVal -= self.fadeAmount
         else:
@@ -180,7 +180,7 @@ class BoundRect:
                   (self.C2.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c2Fac - c.halfDims[1]),
                   (self.C2.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C1.y * c1Fac - c.halfDims[1])]
 
-        co.draw_polygon_alpha(screen, col, points)
+        co.drawPoly(screen, col, points)
         if (self.botVal > 0):
             self.botVal -= self.fadeAmount
         else:
@@ -197,7 +197,7 @@ class BoundRect:
                   (self.C2.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1]),
                   (self.C1.x * c1Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c1Fac - c.halfDims[1])]
 
-        co.draw_polygon_alpha(screen, col, points)
+        co.drawPoly(screen, col, points)
         if (self.frontVal > 0):
             self.frontVal -= self.fadeAmount
         else:
@@ -214,7 +214,7 @@ class BoundRect:
                   (self.C2.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1]),
                   (self.C1.x * c2Fac + c.halfDims[0], c.windowDims[1] - self.C2.y * c2Fac - c.halfDims[1])]
 
-        co.draw_polygon_alpha(screen, col, points)
+        co.drawPoly(screen, col, points)
         if (self.backVal > 0):
             self.backVal -= self.fadeAmount
         else:
