@@ -41,6 +41,25 @@ class DrawableWin:
         pygame.display.flip()
         pygame.display.update()
 
+    def drawFrameGameover(self, mouseCoords, button1Fac, button2Fac):
+        pygame.mouse.set_visible(False)
+        self.screen.fill(self.backCol)
+        pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] - 50, c.halfDims[1] - 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
+        pygame.draw.rect(self.screen, (255, 163, 43), pygame.Rect(c.halfDims[0] - 50, c.halfDims[1] - 50, c.halfDims[0] - 100, c.windowDims[1] - 100) * button1Fac)
+        pygame.draw.rect(self.screen, (179, 43, 43), pygame.Rect(50, 50, 400, 200))
+        pygame.draw.rect(self.screen, (237, 14, 14), pygame.Rect(50, 50, 400, 200 * button2Fac))
+
+        font = pygame.font.SysFont(None, 50)
+        img = font.render('Game Over', True, (255, 255, 255))
+        self.screen.blit(img, (c.halfDims[0], c.halfDims[1]))
+        img = font.render('Restart', True, (255, 255, 255))
+        self.screen.blit(img, (c.halfDims[0], c.halfDims[1]-100))
+
+        for i in range(len(mouseCoords)):
+            co.draw_circle_alpha(self.screen, (255, 255, 255, 255*(i/(len(mouseCoords)-1))), mouseCoords[i], 50, 5)
+        pygame.display.flip()
+        pygame.display.update()
+
     def activateGame(self):
         for i in range(5):
             self.screen.fill(self.backCol)

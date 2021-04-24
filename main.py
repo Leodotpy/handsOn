@@ -23,7 +23,7 @@ ball = B.Ball(50, M.Vector3(0, 0, 500), M.Vector3(1000, 100, 1000), bounds)
 w = WinGUI.DrawableWin(ball)
 
 running = True
-inMenu = True
+frame_state = 'menu'
 hasCamera = False
 
 lastTime = time.time()
@@ -126,17 +126,17 @@ while running:
     lastPoints.pop(0)
     lastPoints.append(mouseCoords)
 
-    if not inMenu:
+    if frame_state == 'game':
         ball.PhysicsTick(deltaTime)
         w.drawFrameGame(True)
-    else:
+    elif frame_state == 'menu':
         # c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100
         if c.halfDims[0] + 50 < mouseCoords[0] < c.windowDims[0] - 50 and 50 < mouseCoords[1] < c.windowDims[1] - 50:
             button1Fac += 0.007
             if button1Fac > 1:
                 button1Fac = 1
                 if w.activateGame():
-                    inMenu = False
+                    frame_state = 'game'
         else:
             button1Fac -= 0.01
             if button1Fac < 0:
@@ -152,7 +152,28 @@ while running:
                 button2Fac = 0
 
         w.drawFrameMenu(lastPoints, button1Fac, button2Fac)
+    elif frame_state == 'gameover':
+        if c.halfDims[0] + 50 < mouseCoords[0] < c.windowDims[0] - 50 and 50 < mouseCoords[1] < c.windowDims[1] - 50:
+            button1Fac += 0.007
+            if button1Fac > 1:
+                button1Fac = 1
+                if w.activateGame():
+                    frame_state = 'game'
+        else:
+            button1Fac -= 0.01
+            if button1Fac < 0:
+                button1Fac = 0
 
+        if 50 < mouseCoords[0] < 450 and 50 < mouseCoords[1] < 250:
+            button2Fac += 0.007
+            if button2Fac > 1:
+                button2Fac = 1
+                break
+        else:
+            button2Fac -= 0.01
+            if button2Fac < 0:
+                button2Fac = 0
+        w.drawFrameGameover(lastPoints, button1Fac, button2Fac)
 
 
 pygame.quit()
