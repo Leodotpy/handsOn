@@ -7,74 +7,35 @@ import ctypes
 import time
 import pyautogui as mouse
 
-cap = cv2.VideoCapture(1)
-
 mpHands = mp.solutions.hands
 hands = mpHands.Hands()
-
 mpDraw = mp.solutions.drawing_utils
-
 monWidth, monHeight = mouse.size()
 
-print(monWidth, monHeight)
+def create_video_stream():
+    cap = cv2.VideoCapture(1)
 
+    while (True):
+        ret, frame = cap.read()
 
-def moveMouse(cx, cy, w, h):
-    offsetX = int(w / 10)
-    offsetY = int(h / 10)
+        frame = cv2.flip(frame, 1)
 
-    # mouse.click(button="left")
-    # mouse.move(cx/w*monWidth,cy/h*monHeight)
-    mouse.moveTo((cx - offsetX) / (w - (offsetX * 2)) * monWidth,
-               (cy - offsetY) / (h - (offsetY * 2)) * monHeight)
+        camRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = hands.process(camRGB)
 
-
-while (True):
-    # Capture frame-by-frame
-    ret, frame = cap.read()
-
-    frame = cv2.flip(frame, 1)
-
-    # Our operations on the frame come here
-    camRGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = hands.process(camRGB)
-    # print(results.multi_hand_landmarks)
-
-    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    if results.multi_hand_landmarks:
-
-        for handLms in results.multi_hand_landmarks:
-
-            # get landmark and index number for landmark
-            for id, lm in enumerate(handLms.landmark):
-                # print(id,lm)
-
+        if results.multi_hand_landmarks:
+            for handLms in results.multi_hand_landmarks:
                 w, h, c = frame.shape
-                cx, cy = int(lm.x * w), int(lm.y * h)
-                # print(id, cx,cy)
+                cx = int(handLms.landmark[mpHands.HandLandmark.INDEX_FINGER_TIP].x * w)
+                cy = int(handLms.landmark[mpHands.HandLandmark.INDEX_FINGER_TIP].y * h)
+                cz = handLms.landmark[mpHands.HandLandmark.INDEX_FINGER_TIP].z
 
-                if id == 8:
-                    moveMouse(cx, cy, w, h)
+                mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)
 
-            mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS)
 
-    # perform a naive attempt to find the (x, y) coordinates of
-    # the area of the image with the largest intensity value
-    '''(minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
-    cv2.circle(cam, maxLoc, 5, (255, 0, 0), 2)'''
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-    # Display the resulting frame
-
-    # frame = cv2.resize(frame,2)
-
-    cv2.imshow('frame', frame)
-
-    # print(len(frame[0]), len(frame))
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# When everything done, release the capture
-cap.release()
-cv2.destroyAllWindows()
+    # When everything done, release the capture
+    cap.release()
+    cv2.destroyAllWindows()
