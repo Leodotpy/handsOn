@@ -13,8 +13,8 @@ class Track:
 
         self.mpHands = mp.solutions.hands
 
-        self.hands = self.mpHands.Hands(max_num_hands=1, min_tracking_confidence=0.6,
-                                        min_detection_confidence=0.6)
+        self.hands = self.mpHands.Hands(max_num_hands=1, min_tracking_confidence=0.5,
+                                        min_detection_confidence=0.5)
         self.hand_list = []
         self.mpHands = mp.solutions.hands
 
@@ -50,5 +50,5 @@ class Track:
                 #self.mpDraw.draw_landmarks(frame, handLms, self.mpHands.HAND_CONNECTIONS)
 
         return frame, coordList
-        # self.hand_list.append(handLms.landmark)
+        # self.hand_list.append(handLms.landmark)ZA
         # return self.hand_list
