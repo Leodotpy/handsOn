@@ -1,4 +1,5 @@
 import pygame, sys #setup python
+import cv2, time
 
 #create pygame window/ set resolution
 mainClock = pygame.time.Clock()
@@ -6,6 +7,7 @@ from pygame.locals import *
 pygame.init()
 pygame.display.set_caption('game')
 screen = pygame.display.set_mode((800,800),0,32)
+
 
 #font
 font = pygame.font.SysFont(None, 20)
@@ -32,8 +34,8 @@ def menu():
         button_2=pygame.Rect(50,200,200,50)
         if button_1.collidepoint((mx,my)):
             if click:
-                pass
-        if button_2.collidepoint((mx,my)):
+                game()
+        if button_2.collidepoint((mx,my)): #options maybe?
             if click:
                 pass
         pygame.draw.rect(screen,(255,0,0), button_1)
