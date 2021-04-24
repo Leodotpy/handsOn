@@ -44,3 +44,5 @@ class Ball:
                     self.pos.z = self.bounds[i].C1.z - self.radius
                     self.velocity.z = -self.velocity.z
 
+    def draw(self, screen):
+        pygame.draw.circle(screen, (255, 0, 0), (self.x, self.y), self.radius)
