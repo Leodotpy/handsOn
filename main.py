@@ -59,7 +59,30 @@ def averageOfLast(points):
     # print(average)
     return average
 
+
+def setPoints(coordList):
+    # remove the last point in the list and add the new one
+    if coordList:
+        lastPoints.pop(0)
+        lastPoints.append(coordList[0])
+
+
+
+    # get the average of the points
+    average = averageOfLast(lastPoints)
+
+    posX = c.windowDims[0] * (average[0] / myHands.w) / 2
+    posY = c.windowDims[1] * (average[1] / myHands.h) / 2
+
+    return posX, posY
+
+
+
+
 average = (0,0)
+paddleX, paddleY = average
+
+
 while running:
     # Calculate delta time in seconds
     currentTime = time.time()
@@ -82,20 +105,11 @@ while running:
         # pass the frame and list of points for tracking
         frame, coordList = (myHands.get_hand_position(frame, [4]))
 
-        # remove the last point in the list and add the new one
-        if coordList:
-            lastPoints.pop(0)
-            lastPoints.append(coordList[0])
+        paddleX, paddleY = setPoints(coordList)
 
-            '''for i in range(len(lastPoints)-1):
-                cv2.circle(frame, (lastPoints[i][0],lastPoints[i][1]), 15, [255, 255, 0])'''
 
-        # get the average of the points
-        average = averageOfLast(lastPoints)
 
-        # circle each of the last points and the average point
-        '''for coord in lastPoints:
-            cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)'''
+        
 
         #cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
 
@@ -105,10 +119,6 @@ while running:
 
     #paddleX, paddleY = pygame.mouse.get_pos()
 
-    posX = c.windowDims[0] * (average[0] / myHands.w)/2
-    posY = c.windowDims[1] * (average[1] / myHands.h)/2
-
-    paddleX, paddleY = posX, posY
 
     deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)
