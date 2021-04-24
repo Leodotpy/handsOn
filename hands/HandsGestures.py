@@ -23,6 +23,7 @@ mpHands = mp.solutions.hands
 hands = mpHands.Hands()
 mpDraw = mp.solutions.drawing_utils
 
+
 # get size of user's monitor
 monWidth, monHeight = pyautogui.size()
 print(monWidth, monHeight)
