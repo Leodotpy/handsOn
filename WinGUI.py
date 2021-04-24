@@ -56,6 +56,16 @@ class DrawableWin:
         self.ball.bounds[2].drawFillFront(self.screen, (255, 0, 0, 255), (150, 100, 100, 20))
         self.ball.bounds[2].drawWire(self.screen, 2)
 
+        #Draw Power ups
+        if self.bounds[3]:
+            self.ball.bounds[3].drawFillBack(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
+            self.ball.bounds[3].drawFillRight(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
+            self.ball.bounds[3].drawFillLeft(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
+            self.ball.bounds[3].drawFillTop(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
+            self.ball.bounds[3].drawFillBottom(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
+            self.ball.bounds[3].drawFillFront(self.screen, (255, 0, 0, 255), (150, 100, 100, 20))
+            self.ball.bounds[3].drawWire(self.screen, 2)
+
         # Draw player on top
         self.ball.bounds[1].drawFillBack(self.screen, (100, 255, 130, 255), (100, 100, 100, 20))
         self.ball.bounds[1].drawFillRight(self.screen, (100, 100, 100, 100), (100, 100, 100, 20))

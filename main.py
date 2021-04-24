@@ -1,5 +1,6 @@
 from Physics import Math as M
 from Physics import Ball as B
+from Physics import Powers as P
 import time
 import WinGUI
 import pygame
@@ -15,6 +16,7 @@ ai_paddle = M.BoundRect(M.Vector3(-50, -50, 970), M.Vector3(50, 50, 1000), M.Vec
 
 bounds.append(player_paddle)
 bounds.append(ai_paddle)
+bounds.append(P.slowPower())
 
 ball = B.Ball(50, M.Vector3(0, 0, 500), M.Vector3(1000, 100, 1000), bounds)
 

@@ -1,4 +1,5 @@
 import Physics.Math as m
+import Physics.Powers as p
 import math
 import pygame
 from pingPong.constants import Constants as c
@@ -108,6 +109,12 @@ class Ball:
             if i == 1:
                 if hit:
                     c.score += 1
+                    if c.score%5 == 0 and self.bounds[3] != None:
+                        bounds[3] = p.slowPower()
+            if i == 3:
+                if hit:
+                    bounds[3].apply_power(self)
+                    bounds[3] = None
 
     def draw(self, screen):
         if self.pos.z == 0:
