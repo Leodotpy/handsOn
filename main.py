@@ -12,32 +12,26 @@ import cv2
 width, height = 1920, 1080
 
 bounds = [M.BoundRect(M.Vector3(-500, -500, 0), M.Vector3(500, 500, 1000), M.Vector3(0, 0, 0), True)]
-
 player_paddle = M.BoundRect(M.Vector3(-200, -200, 0), M.Vector3(200, 200, 100), M.Vector3(0, 0, 50), False)
 ai_paddle = M.BoundRect(M.Vector3(-50, -50, 970), M.Vector3(50, 50, 1000), M.Vector3(0, 0, 985), False)
-
 bounds.append(player_paddle)
 bounds.append(ai_paddle)
-
 ball = B.Ball(50, M.Vector3(0, 0, 500), M.Vector3(1000, 100, 1000), bounds)
 
 w = WinGUI.DrawableWin(ball)
-
 running = True
-
 lastTime = time.time()
 
 # set up webcam video capture device
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 #prevPaddleX, prevPaddleY = pygame.mouse.get_pos()
 prevPaddleX, prevPaddleY = 0,0
 
-
 myHands = None
 
 # points stored in memory for averaging
-pointLength = 16
+pointLength = 3
 lastPoints = [(0, 0)] * pointLength
 
 # calculate the average of the last points
@@ -90,19 +84,25 @@ while running:
         # get the average of the points
         average = averageOfLast(lastPoints)
 
-        # circle each of the last points and the average point
-        for coord in lastPoints:
-            cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)
 
-        cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
+
+        # circle each of the last points and the average point
+        #for coord in lastPoints:
+        #    cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)
+
+        #cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
 
         # display the resulting frame
-        cv2.imshow('frame', frame)
+        #cv2.imshow('frame', frame)
 
 
     #paddleX, paddleY = pygame.mouse.get_pos()
 
-    paddleX, paddleY = average[0],average[1]
+    posX = width*(average[0]/myHands.w)
+    posY = height*(average[1]/myHands.h)
+
+    paddleX, paddleY = posX,posY
+    print(average)
 
     deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)

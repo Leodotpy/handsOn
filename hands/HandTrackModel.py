@@ -13,7 +13,7 @@ class Track:
 
         self.mpHands = mp.solutions.hands
 
-        self.hands = self.mpHands.Hands(max_num_hands=2, min_tracking_confidence=0.6,
+        self.hands = self.mpHands.Hands(max_num_hands=1, min_tracking_confidence=0.6,
                                         min_detection_confidence=0.6)
         self.hand_list = []
         self.mpHands = mp.solutions.hands
@@ -36,9 +36,8 @@ class Track:
         if results.multi_hand_landmarks:
             for handLms in results.multi_hand_landmarks:
                 for id, lm in enumerate(handLms.landmark):
-                    h, w, c = frame.shape
 
-                    cx, cy = int(lm.x * w), int(lm.y * h)
+                    cx, cy = int(lm.x * self.w), int(lm.y * self.h)
                     # print(id, cx, cy)
 
                     # print(point, pointList[point])
@@ -48,7 +47,7 @@ class Track:
 
                             point += 1
 
-                self.mpDraw.draw_landmarks(frame, handLms, self.mpHands.HAND_CONNECTIONS)
+                #self.mpDraw.draw_landmarks(frame, handLms, self.mpHands.HAND_CONNECTIONS)
 
         return frame, coordList
         # self.hand_list.append(handLms.landmark)

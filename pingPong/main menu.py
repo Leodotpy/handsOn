@@ -26,7 +26,7 @@ def draw_text (text, font, colour, surface, x, y):
 
 click = False
 
-cap=cv2.VideoCapture(0)
+#cap=cv2.VideoCapture(0)
 
 def menu():
     while True:
@@ -74,6 +74,7 @@ def menu():
                 if event.button ==1:
                     click=True
         pygame.display.flip()
+        pygame.display.update()
 
 def game():
     running = True
