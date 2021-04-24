@@ -39,15 +39,25 @@ def moveMouse(cx, cy, w, h):
 
 myHands = None
 
-pointLength = 5
+pointLength = 10
 
 lastPoints = [(0,0)]*pointLength
 
 
 
 def averageOfLast(points):
-    average = [int(np.mean(points[0])),int(np.mean(points[1]))]
-    print(average)
+    #average = [int(np.mean(points[0])),int(np.mean(points[1]))]
+    vx = 0
+    vy = 0
+
+    for v in range(len(points)-1):
+        vx = points[v][0] + vx
+        vy = points[v][1] + vy
+
+    average = (int(vx/(len(points)-1)), int(vy/(len(points)-1)))
+
+    # print(points)
+    # print(average)
     return average
 
 
