@@ -8,9 +8,6 @@ from pingPong.constants import Constants as c
 import hands.HandTrackModel as HandTrackModel
 import cv2
 
-
-width, height = 1920, 1080
-
 bounds = [M.BoundRect(M.Vector3(-500, -500, 0), M.Vector3(500, 500, 1000), M.Vector3(0, 0, 0), True)]
 
 player_paddle = M.BoundRect(M.Vector3(-200, -200, 0), M.Vector3(200, 200, 100), M.Vector3(0, 0, 50), False)
@@ -28,7 +25,12 @@ running = True
 lastTime = time.time()
 
 # set up webcam video capture device
-cap = cv2.VideoCapture(1)
+for i in range(4):
+    try:
+        cap = cv2.VideoCapture(i)
+        break
+    except:
+        pass
 
 #prevPaddleX, prevPaddleY = pygame.mouse.get_pos()
 prevPaddleX, prevPaddleY = 0,0
@@ -94,16 +96,16 @@ while running:
         '''for coord in lastPoints:
             cv2.circle(frame, (coord[0], coord[1]), 15, [255, 255, 0], 2)'''
 
-        cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
+        #cv2.circle(frame, (average[0], average[1]), 15, [0, 255, 255], 2)
 
         # display the resulting frame
-        cv2.imshow('frame', frame)
+        #cv2.imshow('frame', frame)
 
 
     #paddleX, paddleY = pygame.mouse.get_pos()
 
-    posX = width * (average[0] / myHands.w)/2
-    posY = height * (average[1] / myHands.h)/2
+    posX = c.windowDims[0] * (average[0] / myHands.w)/2
+    posY = c.windowDims[1] * (average[1] / myHands.h)/2
 
     paddleX, paddleY = posX, posY
 
