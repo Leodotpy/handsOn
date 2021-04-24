@@ -27,5 +27,7 @@ class DrawableWin:
     def drawFrame(self):
         self.screen.fill(self.backCol)
         self.ball.draw(self.screen)
+        for i in range(len(self.ball.bounds)):
+            self.ball.bounds[i].draw(self.screen, 2)
         pygame.display.flip()
         pygame.display.update()

@@ -45,6 +45,12 @@ class Vector3:
     def normalized(self):
         return self.Divide(self.Length())
 
+    def depthAdjustFactor(self):
+        if self.z == 0:
+            return 0
+        else:
+            return 500/self.z
+
 
 class BoundRect:
     C1, C2 = Vector3(0, 0, 0), Vector3(0, 0, 0)
@@ -55,5 +61,23 @@ class BoundRect:
         self.C2 = C2
         self.concave = concave
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, (0, 0, 0), (self.C1.x, self.C1.y, 2*self.C1.x - self.C2.x, 2*self.C1.y-self.C2.y))
+    def draw(self, screen, width):
+        c1Fac = self.C1.depthAdjustFactor()
+        c2Fac = self.C2.depthAdjustFactor()
+        # Front Right
+        pygame.draw.line(screen, (200, 200, 200), (self.C2.x*c1Fac, self.C1.y*c1Fac), (self.C2.x*c1Fac, self.C2.y*c1Fac), width)
+        # Front Left
+        pygame.draw.line(screen, (200, 200, 200), (self.C1.x*c1Fac, self.C1.y*c1Fac), (self.C1.x*c1Fac, self.C2.y*c1Fac), width)
+        # Front Top
+        pygame.draw.line(screen, (200, 200, 200), (self.C1.x*c1Fac, self.C2.y*c1Fac), (self.C2.x*c1Fac, self.C2.y*c1Fac), width)
+        # Front Bottom
+        pygame.draw.line(screen, (200, 200, 200), (self.C1.x*c1Fac, self.C1.y*c1Fac), (self.C2.x*c1Fac, self.C1.y*c1Fac), width)
+
+        # Back Right
+        pygame.draw.line(screen, (200, 200, 200), (self.C2.x*c2Fac, self.C1.y*c2Fac), (self.C2.x*c2Fac, self.C2.y*c2Fac), width)
+        # Back Left
+        pygame.draw.line(screen, (200, 200, 200), (self.C1.x*c2Fac, self.C1.y*c2Fac), (self.C1.x*c2Fac, self.C2.y*c2Fac), width)
+        # Back Top
+        pygame.draw.line(screen, (200, 200, 200), (self.C1.x*c2Fac, self.C2.y*c2Fac), (self.C2.x*c2Fac, self.C2.y*c2Fac), width)
+        # Back Bottom
+        pygame.draw.line(screen, (200, 200, 200), (self.C1.x*c2Fac, self.C1.y*c2Fac), (self.C2.x*c2Fac, self.C1.y*c2Fac), width)
