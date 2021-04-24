@@ -155,7 +155,7 @@ while running:
             ball.velocity = M.Vector3(random.randint(-1000, 1000), random.randint(-1000, 1000), 1000)
     elif frame_state == 'menu':
         # c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100
-        if c.halfDims[0] + 50 < mouseCoords[0] < c.windowDims[0] - 50 and 50 < mouseCoords[1] < c.windowDims[1] - 50:
+        if c.halfDims[0] + 50 < paddleX < c.windowDims[0] - 50 and 50 < paddleY < c.windowDims[1] - 50:
             button1Fac += 0.007
             if button1Fac > 1:
                 button1Fac = 1
@@ -167,7 +167,7 @@ while running:
             if button1Fac < 0:
                 button1Fac = 0
 
-        if 50 < mouseCoords[0] < 450 and 50 < mouseCoords[1] < 250:
+        if 50 < paddleX < 450 and 50 < paddleY < 250:
             button2Fac += 0.007
             if button2Fac > 1:
                 button2Fac = 1
@@ -179,7 +179,7 @@ while running:
         w.drawFrameMenu(lastPoints, button1Fac, button2Fac)
     elif frame_state == 'gameover':
         # c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.halfDims[1] - 100
-        if c.halfDims[0] + 50 < mouseCoords[0] < c.windowDims[0] - 50 and 50 < mouseCoords[1] < c.halfDims[1] - 50:
+        if c.halfDims[0] + 50 < paddleX < c.windowDims[0] - 50 and 50 < paddleY < c.halfDims[1] - 50:
             button1Fac += 0.007
             if button1Fac > 1:
                 button1Fac = 1
@@ -192,7 +192,7 @@ while running:
                 button1Fac = 0
 
         # 50, 50, c.halfDims[0] - 100, c.halfDims[1] - 100
-        if 50 < mouseCoords[0] < c.halfDims[0] - 50 and 50 < mouseCoords[1] < c.halfDims[1] - 50:
+        if 50 < paddleX < c.halfDims[0] - 50 and 50 < paddleY < c.halfDims[1] - 50:
             button2Fac += 0.007
             if button2Fac > 1:
                 button2Fac = 1
