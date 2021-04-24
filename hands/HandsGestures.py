@@ -39,13 +39,16 @@ def moveMouse(cx, cy, w, h):
 
 myHands = None
 
-pointLength = 25
+pointLength = 3
 
 lastPoints = [(0,0)]*pointLength
 
 
 
-
+def averageOfLast(points):
+    average = [int(np.mean(points[0])),int(np.mean(points[1]))]
+    print(average)
+    return average
 
 
 while (True):
@@ -67,13 +70,26 @@ while (True):
     else:
 
 
+        frame, coordList = (myHands.get_hand_position(frame,[4]))
 
+        #print(coordList)
 
-        frame, coordList = (myHands.get_hand_position(frame,[4,8]))
-
-        if coordList != [[0,0],[0,0]]:
+        if coordList:
             lastPoints.pop(0)
-            lastPoints.append(coordList)
+            lastPoints.append(coordList[0])
+
+            '''for i in range(len(lastPoints)-1):
+                cv2.circle(frame, (lastPoints[i][0],lastPoints[i][1]), 15, [255, 255, 0])'''
+
+        average = averageOfLast(lastPoints)
+
+        cv2.circle(frame, (average[0],average[1]), 15, [255, 255, 0])
+
+
+
+
+        '''if coordList != [[0,0],[0,0]]:
+            
 
             #print(lastPoints)
 
@@ -85,7 +101,7 @@ while (True):
                     print('failed')
 
         #print(coordList)
-
+'''
 
 
 
