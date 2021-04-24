@@ -21,13 +21,13 @@ class DrawableWin:
         running = True
         # Fill the background with white
         self.screen.fill(self.backCol)
-        pygame.mouse.set_visible(False)
+        #pygame.mouse.set_visible(False)
         clock = pygame.time.Clock()
 
     def drawFrame(self):
         self.screen.fill(self.backCol)
-        self.ball.draw(self.screen)
         for i in range(len(self.ball.bounds)):
-            self.ball.bounds[i].draw(self.screen, 2)
+            self.ball.bounds[i].drawFillRight(self.screen, [255, 100, 100, 50])
+        self.ball.draw(self.screen)
         pygame.display.flip()
         pygame.display.update()

@@ -84,5 +84,6 @@ class Ball:
     def draw(self, screen):
         if self.pos.z == 0:
             self.pos.z = 1
-        pygame.draw.circle(screen, (255, 255, 255), (self.pos.x + (1920 / 2), 1080 - self.pos.y - (1080 / 2)),
-                           self.radius * self.pos.depthAdjustFactor())
+        factor = self.pos.depthAdjustFactor()
+        pygame.draw.circle(screen, (255, 255, 255), (self.pos.x*factor + (1920 / 2), 1080 - self.pos.y*factor - (1080 / 2)),
+                           self.radius * factor)
