@@ -29,7 +29,7 @@ print(monWidth, monHeight)
 
 def moveMouse(cx, cy, w, h):
     offsetX = int(w / 10)
-    offsetY = int(h / 8)
+    offsetY = int(h / 8)#
 
     # mouse.click(button="left")
     # mouse.move(cx/w*monWidth,cy/h*monHeight)
