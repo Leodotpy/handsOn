@@ -41,7 +41,26 @@ class DrawableWin:
         pygame.display.flip()
         pygame.display.update()
 
-    def drawFrameGameover(self, mouseCoords, button1Fac, button2Fac):
+    def activateGameOver(self):
+        for i in range(50):
+            self.drawFrameGame(False)
+            co.draw_rect_alpha(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255*(i/49)), pygame.Rect(0,0, c.windowDims[0], c.windowDims[1]))
+            self.ball.drawRed(self.screen)
+            pygame.display.flip()
+            pygame.display.update()
+            t.sleep(0.005)
+
+        for i in range(50):
+            self.drawFrameGameover(False)
+            self.ball.drawRed(self.screen)
+            co.draw_rect_alpha(self.screen, (self.backCol[0], self.backCol[1], self.backCol[2], 255*(1-(i/49))), pygame.Rect(0,0, c.windowDims[0], c.windowDims[1]))
+            self.ball.drawRed(self.screen)
+            pygame.display.flip()
+            pygame.display.update()
+            t.sleep(0.005)
+
+
+    def drawFrameGameover(self, mouseCoords, button1Fac, button2Fac, update):
         pygame.mouse.set_visible(False)
         self.screen.fill(self.backCol)
         pygame.draw.rect(self.screen, (179, 120, 43), pygame.Rect(c.halfDims[0] - 50, c.halfDims[1] - 50, c.halfDims[0] - 100, c.windowDims[1] - 100))
@@ -57,8 +76,10 @@ class DrawableWin:
 
         for i in range(len(mouseCoords)):
             co.draw_circle_alpha(self.screen, (255, 255, 255, 255*(i/(len(mouseCoords)-1))), mouseCoords[i], 50, 5)
-        pygame.display.flip()
-        pygame.display.update()
+
+        if update:
+            pygame.display.flip()
+            pygame.display.update()
 
     def activateGame(self):
         for i in range(5):
@@ -100,8 +121,12 @@ class DrawableWin:
     def drawFrameGame(self, update):
         self.screen.fill(self.backCol)
         font = pygame.font.SysFont(None, 70)
-        img = font.render('Score:' + str(c.score), True, (255, 255, 255))
-        self.screen.blit(img, (30, c.halfDims[1]))
+        img = font.render('Score: ' + str(c.score), True, co((20, 255, 130)).interpColors((255, 255, 255), self.ball.bounds[1].backVal))
+        self.screen.blit(img, (30, c.halfDims[1] + 25))
+
+        font = pygame.font.SysFont(None, 70)
+        img = font.render('Lives: ' + str(self.ball.lives), True, co((255, 0, 0)).interpColors((255, 255, 255), self.ball.bounds[0].frontVal))
+        self.screen.blit(img, (30, c.halfDims[1] - 25))
 
         # Draw arena first
         self.ball.bounds[0].drawFillBack(self.screen, (100, 100, 100, 100), (100, 100, 100, 20))
@@ -122,13 +147,13 @@ class DrawableWin:
         self.ball.bounds[2].drawWire(self.screen, 2)
 
         #Draw Power ups
-        if self.bounds[3]:
-            self.ball.bounds[3].drawFillBack(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
-            self.ball.bounds[3].drawFillRight(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
-            self.ball.bounds[3].drawFillLeft(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
-            self.ball.bounds[3].drawFillTop(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
-            self.ball.bounds[3].drawFillBottom(self.screen, (100, 100, 100, 100), (150, 100, 100, 20))
-            self.ball.bounds[3].drawFillFront(self.screen, (255, 0, 0, 255), (150, 100, 100, 20))
+        if len(self.ball.bounds) == 4:
+            self.ball.bounds[3].drawFillBack(self.screen, (100, 100, 255, 100), (100, 100, 255, 20))
+            self.ball.bounds[3].drawFillRight(self.screen, (100, 100, 255, 100), (100, 100, 255, 20))
+            self.ball.bounds[3].drawFillLeft(self.screen, (100, 100, 255, 100), (100, 100, 255, 20))
+            self.ball.bounds[3].drawFillTop(self.screen, (100, 100, 255, 100), (100, 100, 255, 20))
+            self.ball.bounds[3].drawFillBottom(self.screen, (100, 100, 255, 100), (100, 100, 255, 20))
+            self.ball.bounds[3].drawFillFront(self.screen, (100, 100, 255, 255), (100, 100, 255, 20))
             self.ball.bounds[3].drawWire(self.screen, 2)
 
         # Draw player on top

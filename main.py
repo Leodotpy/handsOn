@@ -114,21 +114,25 @@ while running:
             # pass the frame and list of points for tracking
             frame, coordList = (myHands.get_hand_position(frame, [4]))
 
-            paddleX, paddleY = setPoints(coordList)
+            mouseCoords = setPoints(coordList)
 
     deltaBlock = M.Vector3(paddleX - c.halfDims[0], c.windowDims[1]-paddleY-c.halfDims[1], 50)
     ball.bounds[1].moveBlock(deltaBlock)
-    ball.bounds[2].moveBlock(M.Vector3(ball.pos.x, ball.pos.y, 0))
+    #ball.bounds[2].moveBlock(M.Vector3(ball.pos.x, ball.pos.y, 0))
 
-    mouseCoords = pygame.mouse.get_pos()
     if not hasCamera:
-        paddleX, paddleY = mouseCoords
+        mouseCoords = pygame.mouse.get_pos()
+
+    paddleX, paddleY = mouseCoords
     lastPoints.pop(0)
     lastPoints.append(mouseCoords)
 
     if frame_state == 'game':
         ball.PhysicsTick(deltaTime)
         w.drawFrameGame(True)
+        if ball.lives <= 0:
+            frame_state = 'gameover'
+            ball.lives = 3
     elif frame_state == 'menu':
         # c.halfDims[0] + 50, 50, c.halfDims[0] - 100, c.windowDims[1] - 100
         if c.halfDims[0] + 50 < mouseCoords[0] < c.windowDims[0] - 50 and 50 < mouseCoords[1] < c.windowDims[1] - 50:

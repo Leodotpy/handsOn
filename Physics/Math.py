@@ -32,7 +32,7 @@ class Vector3:
         if B == 0:
             return Vector3(0, 0, 0)
 
-        return self.Multiply(1 / B)
+        return self.multiply(1 / B)
 
     # Calculate Dot Product of this vector and another
     def dot(self, B):
@@ -42,10 +42,10 @@ class Vector3:
         return self.x * self.x + self.y * self.y + self.z * self.z
 
     def length(self):
-        return math.sqrt(self.Length2())
+        return math.sqrt(self.length2())
 
     def normalized(self):
-        return self.Divide(self.Length())
+        return self.divide(self.length())
 
     def depthAdjustFactor(self):
         return 1-(self.z/2000)
